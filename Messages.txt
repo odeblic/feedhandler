@@ -1,0 +1,80 @@
+# This sequence of messages should originate:
+# - 14 corrupted messages
+# - 10 invalid parameters
+# - 2 duplicated orders
+# - 1 missing expected trade
+
+# Order book building (buy side)
+A,100000,B,5,24.33
+A,100001,B,100,24.05
+A,100002,B,150,23.41
+A,100003,B,3000,22.72
+A,100004,B,260,22.72
+A,100005,B,900,22.57
+A,100006,B,32000,20.19
+
+# Order book building (sell side)
+A,100007,S,3,24.77
+A,100008,S,200,24.98
+A,100009,S,50,25.33
+A,100010,S,300,25.73
+A,100011,S,1050,26.11
+A,100012,S,640,26.40
+A,100013,S,2100,27.39
+A,100014,S,45000,29.55
+
+# Duplicate orders
+A,100004,B,260,22.72
+A,100010,S,300,25.73
+
+# Removal of orders
+X,100006,B,32000,20.19
+X,100014,S,45000,29.55
+
+# Single-order matching (sell side)
+A,100015,B,3,24.77
+#T,3,24.77 -> missing trade
+
+# Single-order matching (buy side)
+A,100016,S,5,24.33
+T,5,24.33
+
+# Multi-order matching (sell side)
+A,100017,B,300,25.41
+T,200,24.98
+T,50,25.33
+
+# Multi-order matching (buy side)
+A,100018,S,330,23.37
+T,50,25.41
+T,100,24.05
+T,150,23.41
+
+# Corrupted messages
+A,100019,S,1,
+A,100020,S,1,BAD
+A,100021,S,,1.00
+A,100022,S,BAD,1.00
+A,100023,,1,1.00
+A,100024,BAD,1,1.00
+A,,S,1,1.00
+A,BAD,S,1,1.00
+Z,100025,S,1,1.00
+BAD,100026,S,1,1.00
+T,1,
+T,1,BAD
+T,,1
+T,BAD,1
+
+# Invalid parameters
+A,100027,S,1,-1.00
+A,100028,S,-1,1.00
+A,100029,B,1,0.00
+A,100030,B,0,1.00
+T,1,0.0
+T,0,1.0
+T,1,-1.0
+T,-1,1.0
+X,100098,S,1,1.00
+M,100099,S,1,1.00
+
